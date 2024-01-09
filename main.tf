@@ -46,6 +46,11 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
   policy_arn = aws_iam_policy.policy.arn
 }
 
+resource "aws_iam_instance_profile" "profile" {
+  name = "${var.env}-${var.component}-role"
+  role = aws_iam_role.role.name
+}
+
 resource "aws_security_group" "main" {
   name        = "${var.env}-${var.component}-security-group"
   description = "${var.env}-${var.component}-security-group"
