@@ -16,13 +16,7 @@ resource "aws_iam_role" "role" {
   })
 
   tags = merge(local.common_tags, { Name = "${var.env}-${var.component}-role"} )
-
-
-  resource "aws_iam_instance_profile" "profile" {
-    name = "${var.env}-${var.component}-role"
-    role = aws_iam_role.role.name
   }
-}
 
 resource "aws_iam_policy" "policy" {
   name        = "${var.env}-${var.component}-parameter-store-policy"
@@ -45,12 +39,12 @@ resource "aws_iam_policy" "policy" {
       }
     ]
   })
-  resource "aws_iam_role_policy_attachment" "role-attach" {
-    role       = aws_iam_role.role.name
-    policy_arn = aws_iam_policy.policy.arn
-  }
 }
 
+resource "aws_iam_role_policy_attachment" "role-attach" {
+  role       = aws_iam_role.role.name
+  policy_arn = aws_iam_policy.policy.arn
+}
 
 resource "aws_security_group" "main" {
   name        = "${var.env}-${var.component}-security-group"
