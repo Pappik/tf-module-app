@@ -39,7 +39,9 @@ resource "aws_iam_policy" "policy" {
           "arn:aws:ssm:us-east-1:588365094154:parameter/${var.env}.${var.component}*",
           "arn:aws:ssm:us-east-1:588365094154:parameter/nexus*",
           "arn:aws:ssm:us-east-1:588365094154:parameter/${var.env}.docdb*",
-          "arn:aws:ssm:us-east-1:588365094154:parameter/${var.env}.elasticache*"
+          "arn:aws:ssm:us-east-1:588365094154:parameter/${var.env}.elasticache*",
+          "arn:aws:ssm:us-east-1:588365094154:parameter/${var.env}.rds*"
+
 
 
         ]
