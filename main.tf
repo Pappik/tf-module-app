@@ -134,3 +134,18 @@ resource "aws_autoscaling_group" "asg" {
   }
 
 }
+
+resource "aws_route53_record" "app" {
+  zone_id = "Z01783243D3S1K1FW0QID"
+  name    = "${var.component}-${var.env}.pappik.online"
+  type    = "CNAME"
+  ttl     = 30
+  records = var.alb
+}
+
+resource "aws_lb_target_group" "target_group" {
+  name     = "${var.component}-${var.env}"
+  port     = var.app_port
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+}
