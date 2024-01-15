@@ -162,7 +162,7 @@ resource "aws_lb_target_group" "target_group" {
 }
 
 resource "aws_lb_listener_rule" "backend" {
-  count = listener_priority !=0 ? 1 : 0
+  count = var.listener_priority !=0 ? 1 : 0
   listener_arn = var.listener
   priority     = var.listener_priority
 
