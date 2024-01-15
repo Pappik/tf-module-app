@@ -13,3 +13,4 @@ variable "component" {
   default = "rabbitmq"
 }
 variable "alb" {}
+variable "listner" {}
