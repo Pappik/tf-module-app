@@ -14,3 +14,4 @@ variable "component" {
 variable "alb" {}
 variable "listener" {}
 variable "listener_priority" {}
+variable "alb_arn" {}

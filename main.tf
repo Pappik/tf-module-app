@@ -111,30 +111,30 @@ resource "aws_launch_template" "main" {
 }
 
 
-#resource "aws_autoscaling_group" "asg" {
-#  name                      = "${var.env}-${var.component}-asg"
-#  max_size                  = var.max_size
-#  min_size                  = var.min_size
-#  desired_capacity          = var.desired_capacity
-#  force_delete              = true
-#  vpc_zone_identifier       = var.subnet_ids
-#  target_group_arns = [aws_lb_target_group.target_group.arn]
-#
-#  launch_template {
-#    id    = aws_launch_template.main.id
-#    version = "$Latest"
-#  }
-#
-#  dynamic "tag" {
-#    for_each = local.all_tags
-#    content {
-#      key = tag.value.key
-#      value = tag.value.value
-#      propagate_at_launch = true
-#    }
-#  }
-#
-#}
+resource "aws_autoscaling_group" "asg" {
+  name                      = "${var.env}-${var.component}-asg"
+  max_size                  = var.max_size
+  min_size                  = var.min_size
+  desired_capacity          = var.desired_capacity
+  force_delete              = true
+  vpc_zone_identifier       = var.subnet_ids
+  target_group_arns = [aws_lb_target_group.target_group.arn]
+
+  launch_template {
+    id    = aws_launch_template.main.id
+    version = "$Latest"
+  }
+
+  dynamic "tag" {
+    for_each = local.all_tags
+    content {
+      key = tag.value.key
+      value = tag.value.value
+      propagate_at_launch = true
+    }
+  }
+
+}
 
 resource "aws_route53_record" "app" {
   zone_id = "Z01783243D3S1K1FW0QID"
@@ -176,4 +176,20 @@ resource "aws_lb_listener_rule" "backend" {
       values = ["${var.component}-${var.env}.pappik.online"]
     }
   }
+}
+
+
+#for frontend
+
+resource "aws_lb_listener" "frontend" {
+  count = var.listener_priority == 0 ? 1 : 0
+  load_balancer_arn = var.alb_arn
+  port              = "80"
+  protocol          = "HTTP"
+
+}
+
+default_action {
+  type             = "forward"
+  target_group_arn = aws_lb_target_group.front_end.arn
 }
