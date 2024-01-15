@@ -141,7 +141,7 @@ resource "aws_route53_record" "app" {
   name    = "${var.component}-${var.env}.pappik.online"
   type    = "CNAME"
   ttl     = 30
-  records = var.alb
+  records = [var.alb]
 }
 
 resource "aws_lb_target_group" "target_group" {
