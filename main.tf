@@ -143,6 +143,19 @@ resource "aws_autoscaling_group" "asg" {
 
 }
 
+
+resource "aws_autoscaling_policy" "cpu-tracking-policy" {
+  name        = "whenCPULoadIncrease"
+  policy_type = "TargetTrackingScaling"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 30.0
+  }
+  autoscaling_group_name = aws_autoscaling_group.asg.name
+}
+
 resource "aws_route53_record" "app" {
   zone_id = "Z01783243D3S1K1FW0QID"
   name    = "${var.component}-${var.env}.pappik.online"
